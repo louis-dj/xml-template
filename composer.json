@@ -1,0 +1,16 @@
+{
+    "name": "louis-dj/xml-template",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "LouisDj\\XmlTemplate\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Louis de Jager"
+        }
+    ],
+    "require": {}
+}
