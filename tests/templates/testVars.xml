@@ -1,0 +1,2 @@
+<name>{{ var firstname }}</name>
+<surname>{{ var lastname }}</surname>

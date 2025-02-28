@@ -1,0 +1,19 @@
+<xml>
+<venues>
+{{ foreach venues }}
+<venue>This is a secret venue</venue>
+{{ end }}
+</venues>
+<bands>
+    {{ foreach bands as band }}
+    <band>
+        <name>{{ var band.name }}</name>
+        <members frontman="{{ var band.frontman }}">
+            {{ foreach band.members as member }}
+            <member>{{ var member }}</member>
+            {{ end }}
+        </members>  
+    </band>
+    {{ end }}
+</bands>
+</xml>

@@ -1,0 +1,18 @@
+{{ if showUsername }}
+<username>Bakkies Botha</username>
+{{ end }}
+{{ if showPassword }}
+<password>rucking4life</password>
+{{ end }}
+{{ if personalEmail }}
+<email>bakkiesbotha@gmail.com</email>
+{{ else }}
+<email>bakkies@sarugby.co.za</email>
+{{ end }}
+{{ if bio }}
+{{ if eng }}
+<bio>My name is Bakkies Botha, best of all time.</bio>
+{{ else }}
+<bio>My naam is Bakkies Botha, beste van alle tye.</bio> 
+{{ end }}
+{{ end }}

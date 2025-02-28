@@ -1,0 +1,4 @@
+<book>
+    <name>{{ var book.name }}</name>
+    <name>{{ var book.isbn }}</name>
+</book>

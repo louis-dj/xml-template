@@ -1,0 +1,37 @@
+<xml>
+<venues>
+
+<venue>This is a secret venue</venue>
+
+<venue>This is a secret venue</venue>
+
+<venue>This is a secret venue</venue>
+
+</venues>
+<bands>
+
+    <band>
+        <name>Van Coke Kartel</name>
+        <members frontman="Francois van Coke">
+
+            <member>Valkie van Coke</member>
+
+            <member>Wynand Myburgh</member>
+
+        </members>
+    </band>
+
+    <band>
+        <name>Pink Floyd</name>
+        <members frontman="Syd Barret">
+
+            <member>Roger Waters</member>
+
+            <member>David Gilmour</member>
+
+        </members>
+    </band>
+
+</bands>
+</xml>
+
