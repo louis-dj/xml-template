@@ -13,6 +13,6 @@
 {{ if eng }}
 <bio>My name is Bakkies Botha, best of all time.</bio>
 {{ else }}
-<bio>My naam is Bakkies Botha, beste van alle tye.</bio> 
+<bio>My naam is Bakkies Botha, beste van alle tye.</bio>
 {{ end }}
 {{ end }}

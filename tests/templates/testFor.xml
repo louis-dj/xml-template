@@ -3,6 +3,9 @@
 {{ foreach venues }}
 <venue>This is a secret venue</venue>
 {{ end }}
+{{ foreach bands as band }}
+<venue>{{ var band.name }}</venue>
+{{ end }}
 </venues>
 <bands>
     {{ foreach bands as band }}
@@ -12,7 +15,7 @@
             {{ foreach band.members as member }}
             <member>{{ var member }}</member>
             {{ end }}
-        </members>  
+        </members>
     </band>
     {{ end }}
 </bands>

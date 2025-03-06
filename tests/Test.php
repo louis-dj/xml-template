@@ -4,6 +4,8 @@ namespace LouisDj\XmlTemplate\Test;
 
 use PHPUnit\Framework\TestCase;
 use \LouisDj\XmlTemplate\XmlTemplate;
+use \LouisDj\XmlTemplate\Test\ExampleClasses\Book;
+use \LouisDj\XmlTemplate\Test\ExampleClasses\Band;
 
 class Test extends TestCase
 {
@@ -79,6 +81,7 @@ class Test extends TestCase
         $template = new XmlTemplate('tests/templates/testFor.xml');
         $subbed_template = @file_get_contents('tests/subbed_templates/testFor.xml');
 
+        // test with array
         $subbed = $template->replaceWith([
             'venues' => [1, 2, 3],
             'bands' => [
@@ -101,24 +104,31 @@ class Test extends TestCase
             ]
         ]);
 
-        echo $subbed;
+        $this->assertEquals($subbed_template, $subbed);
+
+        // test with objects
+        $subbed = $template->replaceWith([
+            'venues' => [1, 2, 3],
+            'bands' => [
+                new Band(
+                    'Van Coke Kartel',
+                    'Francois van Coke',
+                    [
+                        'Valkie van Coke',
+                        'Wynand Myburgh'
+                    ],
+                ),
+                new Band(
+                    'Pink Floyd',
+                    'Syd Barret',
+                    [
+                        'Roger Waters',
+                        'David Gilmour'
+                    ],
+                )
+            ]
+        ]);
 
         $this->assertEquals($subbed_template, $subbed);
-    }
-}
-
-
-class Book
-{
-
-    public string $name;
-    public string $isbn;
-
-    function __construct(
-        string $name,
-        string $isbn
-    ) {
-        $this->name = $name;
-        $this->isbn = $isbn;
     }
 }

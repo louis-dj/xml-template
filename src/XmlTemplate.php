@@ -21,8 +21,8 @@ class XmlTemplate
 
     private function safeAccess(int $index, string $xmlString): string
     {
-        if ($index >= strlen($xmlString)) {
-            return '\0';
+        if ($index >= strlen($xmlString) || $index < 0) {
+            return "\0";
         } else {
             return $xmlString[$index];
         }
@@ -78,11 +78,24 @@ class XmlTemplate
             $variableName = '';
         }
 
+        // Get the current line start index
+        $seek = 1;
+        $currentLineStart = $tokenEnd - $seek;
+        while ($this->safeAccess($currentLineStart, $xmlString) != "\n" && $this->safeAccess($currentLineStart, $xmlString) != "\0") {
+            $seek++;
+            $currentLineStart = $tokenEnd - $seek;
+        }
+        // Move to the character after the newline character
+        if ($currentLineStart != 0) {
+            $currentLineStart++;
+        }
+
         // Create token object
         $token = new Token(
             type: $tokenType,
             start: $tokenStart,
             end: $tokenEnd + 2,
+            currentLineStart: $currentLineStart,
             variable: new Variable($variableName),
         );
 
@@ -150,9 +163,9 @@ class XmlTemplate
 
             // Evaluate expression
             if ($boolValue) {
-                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $ifToken->end, $endToken->start - $ifToken->end)), $ifToken->start, $endToken->end - $ifToken->start);
+                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $ifToken->end, $endToken->start - $ifToken->end), "\r\n"), $ifToken->currentLineStart, $endToken->end - $ifToken->currentLineStart);
             } else {
-                $xmlString = substr_replace($xmlString, '', $ifToken->start, ($endToken->end + 1) - $ifToken->start);
+                $xmlString = substr_replace($xmlString, '', $ifToken->currentLineStart, ($endToken->end + 1) - $ifToken->currentLineStart);
             }
         }
         // Parse if else
@@ -174,9 +187,9 @@ class XmlTemplate
 
             // Evaluate expression
             if ($boolValue) {
-                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $ifToken->end, $elseToken->start - $ifToken->end)), $ifToken->start, $endToken->end - $ifToken->start);
+                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $ifToken->end, $elseToken->start - $ifToken->end), "\r\n"), $ifToken->currentLineStart, $endToken->end - $ifToken->currentLineStart);
             } else {
-                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $elseToken->end, $endToken->start - $elseToken->end)), $ifToken->start, $endToken->end - $ifToken->start);
+                $xmlString = substr_replace($xmlString, trim(substr($xmlString, $elseToken->end, $endToken->start - $elseToken->end), "\r\n"), $ifToken->currentLineStart, $endToken->end - $ifToken->currentLineStart);
             }
         }
 
@@ -228,7 +241,7 @@ class XmlTemplate
 
         // Build replacing string
         $replacedString = "";
-        $toReplaceChunk = substr($xmlString, $forToken->end, $endToken->start - $forToken->end);
+        $toReplaceChunk = substr($xmlString, $forToken->end, $endToken->currentLineStart - $forToken->end);
         $toLoopThrough = $forToken->variable->resolve($variableValueMap);
         foreach ($toLoopThrough as $childValue) {
 
@@ -238,11 +251,12 @@ class XmlTemplate
             }
 
             // Replace the chunk of string and add to total
-            $replacedString .= $this->replaceWith($variableValueMap, false, $toReplaceChunk);
+            $thisIteration =  $this->replaceWith($variableValueMap, false, $toReplaceChunk);
+            $replacedString .=  trim($thisIteration, "\r\n") . "\n";
         }
 
         // Replace tokens
-        return substr_replace($xmlString, trim($replacedString), $forToken->start, $endToken->end - $forToken->start);
+        return substr_replace($xmlString, trim($replacedString, "\r\n"), $forToken->currentLineStart, $endToken->end - $forToken->currentLineStart);
     }
 
 
@@ -287,70 +301,24 @@ class XmlTemplate
     }
 }
 
-
-class Token
-{
-    public $type;
-    public $start;
-    public $end;
-    public $variable;
-
-    public function __construct(
-        TokenType $type,
-        int $start,
-        int $end,
-        Variable $variable,
-    ) {
-        $this->type = $type;
-        $this->start = $start;
-        $this->end = $end;
-        $this->variable = $variable;
-    }
-}
-
-enum TokenType: string
-{
-    case VARIABLE = 'var';
-    case IF = 'if';
-    case ELSE = 'else';
-    case FOREACH = 'foreach';
-    case END = 'end';
-}
-
-class Variable
-{
-    public string $name;
-    public ?Variable $attr;
-
-    function __construct(string $rawText)
-    {
-        $attrStartIndex = strpos($rawText, '.');
-        if ($attrStartIndex) {
-            $this->name = substr($rawText, 0, $attrStartIndex);
-            $this->attr = new Variable(substr($rawText, $attrStartIndex + 1));
-        } else {
-            $this->name = $rawText;
-            $this->attr = null;
-        }
-    }
-
-    function resolve(array $variableValueMap)
-    {
-        $firstLevel = $variableValueMap[$this->name];
-
-        // resolve attrs 
-        if ($this->attr) {
-            $attrName = $this->attr->name;
-            $firstLevel = (object) $firstLevel;
-            $variableValueMap[$attrName] = $firstLevel->$attrName;
-            return $this->attr->resolve($variableValueMap);
-        }
-        return $firstLevel;
-    }
-}
-
-// TODO: refactor files
 // TODO: docs:
     // TODO: nb , global scope, moet in documentation se
     // TODO: spaces are required
+//  TODO: add to the docs a required thing that for if and else directives MUST be on their own line
 // TODO: wat van 'n ander extension, met sy eie treesitter grammar ? 
+//
+//      -- DESCRIPTION
+//
+//      // -- MOTIVATION
+//      // avoid building dynamic xml strings with clunky concatenations
+//      // avoid adding all the static boilerplate with arrtoxml
+//
+//      -- DEMO (CODE EXAMPLE USAGE)
+//      Gebruik net die complicated test
+//
+//      -- SYNTAX
+//      Directives
+//      Rules
+//
+//      -- TESTING & other admin thingies 
+//

@@ -9,7 +9,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "LouisDj\\XmlTemplate\\Test\\": "tests"
+            "LouisDj\\XmlTemplate\\Test\\": "tests",
+            "LouisDj\\XmlTemplate\\Test\\ExampleClasses\\": "tests/example_classes/"
         }
     },
     "authors": [
