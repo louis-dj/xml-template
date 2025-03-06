@@ -307,25 +307,3 @@ class XmlTemplate
         return $xmlString;
     }
 }
-
-// TODO: docs:
-    // TODO: nb , global scope, moet in documentation se
-    // TODO: spaces are required
-//  TODO: add to the docs a required thing that for if and else directives MUST be on their own line
-// TODO: wat van 'n ander extension, met sy eie treesitter grammar ? 
-//
-//      -- DESCRIPTION
-//
-//      // -- MOTIVATION
-//      // avoid building dynamic xml strings with clunky concatenations
-//      // avoid adding all the static boilerplate with arrtoxml
-//
-//      -- DEMO (CODE EXAMPLE USAGE)
-//      Gebruik net die complicated test
-//
-//      -- SYNTAX
-//      Directives
-//      Rules
-//
-//      -- TESTING & other admin thingies 
-//
