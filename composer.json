@@ -1,5 +1,6 @@
 {
     "name": "louis-dj/xml-template",
+    "description": "Xml templating engine for dynamic xml string generation in php",
     "type": "library",
     "license": "MIT",
     "autoload": {
