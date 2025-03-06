@@ -34,6 +34,8 @@ $template = new XmlTemplate('./test.xml');
 $output = $template->replaceWith(['randomVar' => 'Some string']);
 ```
 
+Absolute filepaths AND relative filepaths(relative to cwd) are supported
+
 ## Features
 
 - **Minified**: The `replaceWith` method has an optional boolean parameter `minified` to remove all newline characters from the xml
