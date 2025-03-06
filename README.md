@@ -2,7 +2,7 @@
 
 Generate dynamic xml strings using templated xml files.
 
-TEST PACKAGIST hook
+![Screenshot 2025-03-06 at 21 10 39](https://github.com/user-attachments/assets/80df3472-e26c-4295-aa56-b303da3ccebb)
 
 ## Motivation 
 > Avoid building dynamic xml strings with messy string concatenations in your code.<br>
@@ -10,13 +10,35 @@ TEST PACKAGIST hook
 
 ## Usage
 
-BASIC SETUP MET FILES EN STUFF 
+Install the package with composer: 
 
 ```
-Code usage example met array of object
+composer install louis-dj/xml-template
 ```
 
-Optional minification
+Create an xml file with templating directives
+
+```handlebars
+<xml>
+  {{ var randomVar }}
+</xml>
+```
+
+Import the package and convert with the `replaceWith` method
+
+```php
+<?php
+use LouisDj\XmlTemplate\XmlTemplate;
+
+$template = new XmlTemplate('./test.xml');
+$output = $template->replaceWith(['randomVar' => 'Some string']);
+```
+
+## Features
+
+- **Minified**: The `replaceWith` method has an optional boolean parameter `minified` to remove all newline characters from the xml
+- **Object & Array compatibility**: The associative array passed to the `replaceWith` method can contain string keys OR objects with field names corresponding to the variables OR both
+- See the syntax below for full feature set
 
 ## Syntax & Rules
 
@@ -32,7 +54,7 @@ Optional minification
 
 **If statements**
 
-- All if statements must be closed by an `end` directive
+- All `if` statements must be closed by an `end` directive
 
 ```handlebars
 {{ if booleanValue }}
@@ -41,6 +63,8 @@ Optional minification
 ```
 
 **If else statements**
+
+- All `if else` statements must be closed by an `end` directive
 
 ```handlebars
 {{ if booleanValue }}
@@ -52,6 +76,8 @@ Optional minification
 
 **Foreach statements**
 
+- All `foreach` statements must be closed by an `end` directive
+
 ```handlebars
 {{ foreach countableVariable }}
 <item>This will appear n=(length of countableVariable) times</item>
@@ -60,10 +86,30 @@ Optional minification
 
 **Foreach as statements**
 
+- All `foreach as` statements must be closed by an `end` directive
+
 ```handlebars
 {{ foreach arrayVariable as arrayItem }}
 <item>The array contains: {{ var arrayItem }}</item>
 {{ end }}
+```
+
+**Attribute access**
+
+- The dot (.) operator works to access associative array keys' values too.
+
+```handlebars
+<xml>{{ var someObjectOrArray.attrName }}</xml>
+```
+
+**Pass in Objects to the `replaceWith` method**
+
+- View `tests/Test.php` for more detailed use cases 
+
+```php
+$subbed = $template->replaceWith([
+  'book' => new Book('The Great Gatsby', '1234')
+]);
 ```
 
 ## Testing
