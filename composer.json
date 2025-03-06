@@ -3,6 +3,8 @@
     "description": "Xml templating engine for dynamic xml string generation in php",
     "type": "library",
     "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "LouisDj\\XmlTemplate\\": "src"
