@@ -10,7 +10,7 @@ class XmlTemplate
     public function __construct(
         string $filePath
     ) {
-        $fileContent = @file_get_contents($filePath);
+        $fileContent = @file_get_contents(real_path($filePath));
 
         if (! $fileContent) {
             throw new \Exception("Invalid file path provided: Could not read file contents\n filepath: $filePath");
