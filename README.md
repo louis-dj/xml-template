@@ -2,7 +2,7 @@
 
 Generate dynamic xml strings using templated xml files.
 
-TODO: add image after packagist submit
+TEST PACKAGIST hook
 
 ## Motivation 
 > Avoid building dynamic xml strings with messy string concatenations in your code.<br>
