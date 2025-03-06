@@ -10,6 +10,13 @@ class XmlTemplate
     public function __construct(
         string $filePath
     ) {
+
+        if (realpath($filePath)) {
+            $filePath = realpath($filePath);
+        } else {
+            $filePath = getcwd() . DIRECTORY_SEPARATOR . $filePath;
+        }
+
         $fileContent = @file_get_contents($filePath);
 
         if (! $fileContent) {
