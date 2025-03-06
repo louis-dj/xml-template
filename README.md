@@ -2,7 +2,8 @@
 
 Generate dynamic xml strings using templated xml files.
 
-![Screenshot 2025-03-06 at 21 10 39](https://github.com/user-attachments/assets/80df3472-e26c-4295-aa56-b303da3ccebb)
+![Screenshot 2025-03-06 at 21 35 16](https://github.com/user-attachments/assets/95219e61-a31a-4859-8136-6a4918d0671f)
+
 
 ## Motivation 
 > Avoid building dynamic xml strings with messy string concatenations in your code.<br>
